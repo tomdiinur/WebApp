@@ -1,0 +1,133 @@
+@using TripAdvisor.Models.CityViewModels;
+
+
+@model CityIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="content">
+    <div id="mainContent">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+                <li data-target="#myCarousel" data-slide-to="4"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <a asp-controller="Cities" asp-action="Details\@Model.TopCities.First().ID">
+                        <img src="@Model.TopCities.First().ImageSrc" class="img-responsive" />
+                        <div class="carousel-caption" role="option">
+                            <p>
+                                <h2>@Model.TopCities.First().CityName</h2>
+                                <h3>@Model.TopCities.First().Description</h3>
+                                <br />
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                @foreach (var objTopCity in Model.TopCities.Skip(1))
+            {
+                    <div class="item">
+                        <a asp-controller="Cities" asp-action="Details\@objTopCity.ID">
+                            <img src="@objTopCity.ImageSrc" class="img-responsive" />
+                            <div class="carousel-caption" role="option">
+                                <p>
+                                    <h2>@objTopCity.CityName</h2>
+                                    <h3>@objTopCity.Description</h3>
+                                    <br />
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+
+        @foreach (var CityGroup in Model.CitiesGrouping)
+        {
+            <div class="hover-cols">
+
+                <h2>@CityGroup.Key.Name</h2>
+                <br />
+                <h3>@CityGroup.Key.Description</h3>
+                <br />
+                @foreach (var objCity in CityGroup)
+                {
+                    <li class="hover_effects_li" style="margin: 0 15px 26px;">
+                        <div class="ih-item circle effect11 left_to_right" style="width:230px; height:170px;background:">
+                            <a asp-controller="Cities" asp-action="Details\@objCity.ID">
+                                <div class="spinner"></div>
+                                <div class="img" style="width:230px; height:170px;"><img src="@objCity.ImageSrc"></div>
+                                <div class="info">
+                                    <h3 style="letter-spacing: 0px; margin-top: 0px; font-family: Open+Sans; font-size: 16px; color:#fff;">@objCity.CityName</h3>
+                                    <p style="font-family: Open+Sans; border-top: ; font-size: 12px; color:#fff;">>@objCity.ShortDescription</p>
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                }
+            </div>
+
+        }
+    </div>
+    <aside>
+        <h2>Filter</h2>
+        <form >
+            <section>
+                <header>
+                    <h3>Country</h3>
+                </header>
+                <select asp-for="CountryFilter" class="selectpicker" style="color:black;">
+                    <option value="null">All </option>
+                    @foreach (var objContinentCountries in Model.Countries)
+                    {
+                        <optgroup label="@objContinentCountries.Key"></optgroup>
+                        @foreach (var objCountry in objContinentCountries)
+                        {
+                            <option value="@objCountry.ID">@objCountry.Name</option>
+                        }                    
+                    }
+                </select>
+            </section>
+            <section>
+                <header>
+                    <h3>City Speciality</h3>
+                </header>
+                <select asp-for="CitySpecialityFilter" class="selectpicker" style="color:black;">\
+                    <option value="null">All </option>
+                    @foreach (var objCitySpeciality in Model.CitySpecialities)
+                    {
+                        <option>@objCitySpeciality.ToString() </option>
+                    }
+                </select>
+            </section>
+            <section>
+                <header>
+                    <h3>Max Daily Expence</h3>
+                </header>
+                <input asp-for="MaxDailyExpence" type="number" max="1000" min="0" class="form-control" style="color:black;" />
+            </section>
+            <section>       
+                <button id="Search" class="btn-default">Search</button>                
+            </section>
+        </form>
+    </aside>
+</div>
+<script type="text/javascript" src="~/js/CitiesIndexScript.js"></script>
+
+

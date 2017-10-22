@@ -1,0 +1,113 @@
+@using TripAdvisor.Models.CountryViewModels;
+
+@model CountryIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="content">
+    <div id="mainContent">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+                <li data-target="#myCarousel" data-slide-to="4"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <a asp-controller="Countries" asp-action="Details\@Model.TopCountries.First().ID">
+                        <img src="@Model.TopCountries.First().ImageSrc" class="img-responsive" />
+                        <div class="carousel-caption" role="option">
+                            <p>
+                                <h2>@Model.TopCountries.First().Name</h2>
+                                <h3>@Model.TopCountries.First().Description</h3>
+                                <br />
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                @foreach (var objTopCountry in Model.TopCountries.Skip(1))
+            {
+                    <div class="item">
+                        <a asp-controller="Countries" asp-action="Details\@objTopCountry.ID">
+                            <img src="@objTopCountry.ImageSrc" class="img-responsive" />
+                            <div class="carousel-caption" role="option">
+                                <p>
+                                    <h2>@objTopCountry.Name</h2>
+                                    <h3>@objTopCountry.Description</h3>
+                                    <br />
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+       
+        @await Html.PartialAsync("_FilteredCountries");
+        
+    </div>
+    <aside>
+        <h2>Filter</h2>
+        <form>
+            <section>
+                <header>
+                    <h3>Continent</h3>
+                </header>
+                <select id="ContinentFilter" asp-for="ContinentFilter" class="selectpicker" style="color:black;">
+                    <option value="null">All </option>
+                    @foreach (var objContinent in Model.Continents)
+                    {
+                        
+                         <option>@objContinent.ToString()</option>
+                        
+                    }
+                </select>
+            </section>
+            <section>
+                <header>
+                    <h3>Attidue For Jews</h3>
+                </header>
+                <select id="JewsAttitudeFilter" asp-for="JewsAttitudeFilter" class="selectpicker" style="color:black;">
+                    <option value="null">All </option>
+                    @foreach (var objJewAttitude in Model.JesAttitudes)
+                    {
+
+                        <option>@objJewAttitude.ToString()</option>
+
+                    }
+                </select>
+
+            </section>
+            <section>
+                <header>
+                    <h3>Common Religion</h3>
+                </header>
+                <select id="CommonReligionFilter" asp-for="CommonReligionFilter" class="selectpicker" style="color:black;">
+                    <option value="null">All </option>
+                    @foreach (var objCommonReligion in Model.CommonReligions)
+                    {
+
+                        <option>@objCommonReligion.ToString()</option>
+
+                    }
+                </select>
+            </section>
+        </form>
+    </aside>
+</div>
+<script type="text/javascript" src="~/js/CitiesIndexScript.js"></script>
+
+

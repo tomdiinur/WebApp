@@ -1,0 +1,71 @@
+﻿@using TripAdvisor.Models.CountryViewModels;
+@using Microsoft.AspNetCore.Identity
+@using TripAdvisor.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@model CountryIndexViewModel
+
+<div id="filteredCountries">
+
+    @foreach (var CountyGroup in Model.CountriesGrouping)
+    {
+        <div class="hover-cols">
+
+            <h2>@CountyGroup.Key.ToString()</h2>
+            <br />
+            <br />
+            @foreach (var objCountry in CountyGroup)
+                {
+                <li class="caption_li" style="margin: 0 30px 26px;">
+@if (SignInManager.IsSignedIn(User))
+{
+                    <div style="direction:rtl">
+                        <a class="glyphicon glyphicon-pencil"></a>
+                        <a class="glyphicon glyphicon-remove-sign"></a>        
+                    </div>
+}
+                    <div style="width:280px; height:170px; border: 12px solid #F5F5F5;box-shadow: 1px 2px 2px #cacaca;border-radius: ;" class="wcp-caption-plugin">
+                        <a asp-controller="Countries" asp-action="Details\@objCountry.ID">
+                            <div class="image-caption-box" style="perspective: 2500px; perspective-origin: 50% 50%;">
+                                <div style="width:260px; height:150px; background-color: #239b5d; color: #ffffff; opacity: ; " class="caption flip-image-horizontal captiontext">
+                                    <div style="display:table;height:100%;width: 100%;">
+                                        <div style="text-align: center; padding: 5px;" class="centered-text">
+                                            <h3 style="letter-spacing: 0px; margin-top: 0px; font-family: Open+Sans; font-size: 16px; color:#fff;">@objCountry.Name</h3>
+                                            <p style="font-family: Open+Sans; font-size: 12px; color:#fff;">@objCountry.ShortDesription</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <img style="width:280px; height:150px; transition: all 1s ease; animation-duration: 1s;" src="@objCountry.ImageSrc" class="wcp-caption-image">
+                            </div>
+                        </a>
+                    </div>
+                           
+                </li>                
+                
+            }
+@if (SignInManager.IsSignedIn(User))
+{
+            <li class="caption_li" style="margin: 0 30px 26px;">
+                <div style="width:280px; height:170px; border: 12px solid #F5F5F5;box-shadow: 1px 2px 2px #cacaca;border-radius: ;" class="wcp-caption-plugin">
+                    <a asp-controller="Countries" asp-action="Create/?Continent=@CountyGroup.Key">
+                        <div class="image-caption-box" style="perspective: 2500px; perspective-origin: 50% 50%;">
+                            <div style="width:260px; height:150px; background-color: #239b5d; color: #ffffff; opacity: ; " class="caption flip-image-horizontal captiontext">
+                                <div style="display:table;height:100%;width: 100%;">
+                                    <div style="text-align: center; padding: 5px;" class="centered-text">
+                                        <h3 style="letter-spacing: 0px; margin-top: 0px; font-family: Open+Sans; font-size: 16px; color:#fff;">Create</h3>
+                                        <p style="font-family: Open+Sans; font-size: 12px; color:#fff;">Create New Country in @CountyGroup.Key.ToString()</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <img style="width:280px; height:150px; transition: all 1s ease; animation-duration: 1s;" src="~/images/plus.jpg" class="wcp-caption-image">
+                        </div>
+                    </a>
+                </div>
+
+            </li>  
+}
+        </div>
+    }
+</div>
